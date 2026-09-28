@@ -1,0 +1,13 @@
+{
+  "source": "Deutsche Bahn Timetables API (CC BY 4.0) via piebro/deutsche-bahn-data",
+  "months": {
+    "2026-06": {
+      "source_revision": "d47bd0f72a4aad8e08ad9524d621a88868b8d711",
+      "rows": 241458
+    },
+    "2026-08": {
+      "source_revision": "d47bd0f72a4aad8e08ad9524d621a88868b8d711",
+      "rows": 250104
+    }
+  }
+}

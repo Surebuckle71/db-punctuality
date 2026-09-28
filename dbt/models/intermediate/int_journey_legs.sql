@@ -20,6 +20,7 @@ paired as (
         stop_seq                        as to_seq,
         eva                             as to_eva,
         station_name                    as to_station,
+        arrival_planned                 as to_arrival_planned,
         arrival_delay_min               as to_arrival_delay_min
     from stops
     window w as (partition by journey_id order by stop_seq)
@@ -36,6 +37,9 @@ select
     to_eva,
     to_station,
     from_departure_planned,
+    to_arrival_planned,
+    date_diff('minute', from_departure_planned, to_arrival_planned)
+                                                         as scheduled_run_min,
     from_departure_delay_min,
     to_arrival_delay_min,
     to_arrival_delay_min - from_departure_delay_min      as run_delay_added_min

@@ -10,6 +10,7 @@ select
     eva,
     station_name,
     arrival_planned,
+    date_diff('minute', arrival_planned, departure_planned) as scheduled_dwell_min,
     arrival_delay_min,
     departure_delay_min,
     departure_delay_min - arrival_delay_min as dwell_delay_added_min
