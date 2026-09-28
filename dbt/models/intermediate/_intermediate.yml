@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: int_usable_stops
+    description: Stops trusted for delay math (see the where-clause for the rules).
+    columns:
+      - name: stop_id
+        data_tests: [unique, not_null]
+
+  - name: int_journey_legs
+    description: Consecutive stop pairs within a journey, with delay added on the track.
+    columns:
+      - name: leg_id
+        data_tests: [unique, not_null]
+      - name: journey_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_stop_events')
+                field: journey_id
+      - name: run_delay_added_min
+        data_tests: [not_null]
+
+  - name: int_station_dwells
+    description: Intermediate stops, with delay added while standing at the station.
+    columns:
+      - name: stop_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('int_usable_stops')
+                field: stop_id
+      - name: dwell_delay_added_min
+        data_tests: [not_null]
