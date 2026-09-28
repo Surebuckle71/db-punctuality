@@ -1,0 +1,8 @@
+# Run dbt from the repo root:  uv run dbt build --project-dir dbt --profiles-dir dbt
+db_punctuality:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: data/warehouse.duckdb
+      threads: 4

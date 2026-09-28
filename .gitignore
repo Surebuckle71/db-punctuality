@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# raw data and the local warehouse are rebuilt by the pipeline
+data/raw/
+data/*.duckdb
+data/*.duckdb.wal
+
+# dbt build output
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/
+dbt/.user.yml

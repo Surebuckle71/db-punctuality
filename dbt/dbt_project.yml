@@ -1,0 +1,16 @@
+name: db_punctuality
+version: "0.1.0"
+config-version: 2
+profile: db_punctuality
+
+model-paths: ["models"]
+test-paths: ["tests"]
+
+models:
+  db_punctuality:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table
