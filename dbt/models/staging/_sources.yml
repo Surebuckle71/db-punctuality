@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Long-distance (ICE/IC/EC) stop events written by ingest/fetch_months.py.
+      Data by Deutsche Bahn (Timetables API, CC BY 4.0), via piebro/deutsche-bahn-data.
+    tables:
+      - name: stops
+        meta:
+          external_location: "read_parquet('data/raw/stops-*.parquet', filename = true)"

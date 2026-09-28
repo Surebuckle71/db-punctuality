@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_stop_events
+    description: One row per long-distance train stop, with computed delays and quality flags.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [journey_id, stop_seq]
+    columns:
+      - name: stop_id
+        data_tests: [unique, not_null]
+      - name: journey_id
+        description: One run of one train on one day (ride id + first planned departure).
+        data_tests: [not_null]
+      - name: stop_seq
+        data_tests: [not_null]
+      - name: service_month
+        data_tests: [not_null]
+      - name: eva
+        description: DB station number.
+        data_tests: [not_null]
+      - name: station_name
+        data_tests: [not_null]
+      - name: train_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [ICE, IC, EC]
+      - name: is_cancelled
+        data_tests: [not_null]
+      - name: has_plausible_delay
+        data_tests: [not_null]
+      - name: has_consistent_times
+        data_tests: [not_null]
