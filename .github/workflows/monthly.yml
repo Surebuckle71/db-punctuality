@@ -1,0 +1,44 @@
+name: Monthly data refresh
+
+# DB data for a month is published upstream early the next month.
+on:
+  schedule:
+    - cron: "0 6 5 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Fetch months already in the dashboard, plus the newest one
+        run: |
+          months=$(uv run python -c "import json; print(' '.join(json.load(open('data/marts/provenance.json'))['months']))")
+          uv run python -m ingest.fetch_months --months $months
+          uv run python -m ingest.fetch_months --latest 1
+
+      - name: Build models and run data tests
+        run: |
+          uv run dbt deps --project-dir dbt --profiles-dir dbt
+          uv run dbt build --project-dir dbt --profiles-dir dbt
+
+      - name: Export marts
+        run: uv run python -m analysis.export_marts
+
+      - name: Commit updated marts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/marts
+          git diff --cached --quiet && echo "No changes." && exit 0
+          git commit -m "Refresh marts with latest monthly data"
+          git push
