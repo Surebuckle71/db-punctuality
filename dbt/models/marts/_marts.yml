@@ -42,7 +42,9 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
-            combination_of_columns: [service_date, train_type, phase]
+            # service_month is the source file; a file also holds overnight trains that
+            # started the evening before, so one service_date can appear under two months
+            combination_of_columns: [service_month, service_date, train_type, phase]
     columns:
       - name: service_date
         data_tests: [not_null]
